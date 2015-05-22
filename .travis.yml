@@ -23,6 +23,7 @@ install:
   - go get -d -v ./... && go build -v ./...
 
 script:
-    - go build .
+    - go build -v .
+    - ls -l
 #  - go test -coverprofile=coverage.txt -covermode count ./
 #  - $GOPATH/bin/gocover-cobertura < coverage.txt > shippable/codecoverage/coverage.xml
