@@ -8,11 +8,12 @@ func pingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func homeCtr(c *gin.Context) {
-	c.String(http.StatusOK, "home control")
+	c.String(http.StatusOK, "index.html")
 }
 
 func main() {
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
 	r.GET("/", homeCtr)
 	r.GET("/ping", pingCtr)
