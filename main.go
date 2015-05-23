@@ -13,6 +13,7 @@ func homeCtr(c *gin.Context) {
 
 func main() {
 	r := gin.Default()
+	r.Static("/assets", "./assets")
 	r.GET("/", homeCtr)
 	r.GET("/ping", pingCtr)
 
