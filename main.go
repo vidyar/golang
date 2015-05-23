@@ -8,7 +8,7 @@ func pingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func homeCtr(c *gin.Context) {
-	c.String(http.StatusOK, "index.html")
+	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
 func main() {
