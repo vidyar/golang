@@ -6,5 +6,7 @@ go:
 
 
 script:
-     - go build -v
+     - go get github.com/tools/godep
+     - godep restore
+     - godep go build -v
      - ls -l
