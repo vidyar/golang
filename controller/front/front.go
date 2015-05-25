@@ -2,16 +2,25 @@ package front
 
 
 import (
+    "fmt"
 	"html/template"
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
 
+type blogItem struct {
+    url string
+    title string
+}
 
 func PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func HomeCtr(c *gin.Context) {
+    var bl [2]blogItem
+    bl[0] =  blogItem{"dsfdf", "dsfdsf"}
+    bl[1] = blogItem{"sdfdsf", "34234324"}
+    fmt.Println(bl);
 	blogList := `
 	<li>
             <a href="view.php?id=3833">How To Manually Install Oracle Java on a Debian or Ubuntu VPS</a></li>
