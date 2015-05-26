@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type blogItem struct {
@@ -17,6 +19,16 @@ func PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func HomeCtr(c *gin.Context) {
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/ultrax")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		panic(err.Error())
+	}
 	var bl [2]blogItem
 	bl[0] =  blogItem{
 		"//www.netroby.com/view.php?id=3833",
