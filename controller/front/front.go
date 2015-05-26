@@ -19,7 +19,7 @@ func PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func HomeCtr(c *gin.Context) {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/ultrax?charset=utf8mb4")
+	db, err := sql.Open("mysql", "root:deyilife@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -29,6 +29,8 @@ func HomeCtr(c *gin.Context) {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	fmt.Println(c.Request.Cookies())
 	var bl [2]blogItem
 	bl[0] =  blogItem{
 		"//www.netroby.com/view.php?id=3833",
