@@ -19,7 +19,7 @@ func PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func HomeCtr(c *gin.Context) {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/ultrax")
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/ultrax?charset=utf8mb4")
 	if err != nil {
 		panic(err.Error())
 	}
