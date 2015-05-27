@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -21,6 +22,10 @@ func LoginProcessCtr(c *gin.Context) {
 	c.BindWith(&form, binding.MultipartForm)
 
 	if form.Username == "netroby" && form.Password == "deyilife" {
+		expire := time.Now().AddDate(0, 0, 1)
+		cookie := http.Cookie{Name: "testcookiename", Value: "testcookievalue", Path: "/", Expires: expire, MaxAge: 86400}
+
+		http.SetCookie(c.Writer, &cookie)
 		c.String(http.StatusOK, "you are logged in")
 	} else {
 		c.String(http.StatusOK, "Login failed" + form.Username)
