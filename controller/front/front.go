@@ -30,7 +30,6 @@ func HomeCtr(c *gin.Context) {
 		panic(err.Error())
 	}
 
-	fmt.Println(c.Request.Cookies())
 	var bl [2]blogItem
 	bl[0] =  blogItem{
 		"//www.netroby.com/view.php?id=3833",
@@ -49,5 +48,8 @@ func HomeCtr(c *gin.Context) {
 		)
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{"bloglist":template.HTML(blogList)})
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"bloglist":template.HTML(blogList),
+		"username":c.Request.Cookie("username"),
+	})
 }
