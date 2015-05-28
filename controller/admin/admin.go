@@ -8,10 +8,13 @@ import (
 )
 
 type LoginForm struct {
-	Username     string `form:"username" binding:"required"`
+	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 }
 
+func AddBlogCtr(c *gin.Context) {
+	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
+}
 
 func LoginCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin-login.html", gin.H{})

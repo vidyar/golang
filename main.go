@@ -18,6 +18,7 @@ func main() {
 	{
 		v1.GET("/login", admin.LoginCtr)
 		v1.POST("/login-process", admin.LoginProcessCtr)
+		v1.GET("/addblog", admin.AddBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")
