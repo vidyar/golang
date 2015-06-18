@@ -3,6 +3,7 @@ package admin
 import (
 	"time"
 	"net/http"
+	"html/template"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -29,7 +30,10 @@ func LoginProcessCtr(c *gin.Context) {
 		cookie := http.Cookie{Name: "username", Value: "netroby", Path: "/", Expires: expire, MaxAge: 86400}
 
 		http.SetCookie(c.Writer, &cookie)
-		c.String(http.StatusOK, "you are logged in<a href=\"/\">Click to go</a>")
+		message := "you are logged in<a href=\"/\">Click to go</a>"
+		c.HTML(http.StatusOK, "message.html", gin.H{
+            "message": template.HTML(message),
+        })
 	} else {
 		c.String(http.StatusOK, "Login failed" + form.Username)
 	}
