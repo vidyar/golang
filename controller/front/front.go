@@ -47,9 +47,10 @@ func HomeCtr(c *gin.Context) {
 			bl[i].title,
 		)
 	}
+	 username, err := c.Request.Cookie("username")
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"bloglist":template.HTML(blogList),
-		"username":c.Request.Cookie("username"),
+		"username":username,
 	})
 }
