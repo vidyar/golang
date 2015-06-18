@@ -31,10 +31,17 @@ func LoginProcessCtr(c *gin.Context) {
 
 		http.SetCookie(c.Writer, &cookie)
 		message := "you are logged in<a href=\"/\">Click to go</a>"
-		c.HTML(http.StatusOK, "message.html", gin.H{
-            "message": template.HTML(message),
-        })
+		showMessage(c, message)
 	} else {
-		c.String(http.StatusOK, "Login failed" + form.Username)
+		message := "Login failed"
+		showMessage(c, message)
 	}
+}
+/*
+	Show message with template
+ */
+func showMessage(c *gin.Context, message string) {
+	c.HTML(http.StatusOK, "message.html", gin.H{
+		"message": template.HTML(message),
+	})
 }
