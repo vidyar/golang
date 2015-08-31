@@ -1,9 +1,9 @@
 package main
 
 import (
+	"./internal/controller/admin"
+	"./internal/controller/front"
 	"github.com/gin-gonic/gin"
-	"github.com/netroby/gosense/controller/admin"
-	"github.com/netroby/gosense/controller/front"
 )
 
 func main() {
