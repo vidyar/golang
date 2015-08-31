@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"time"
-	"net/http"
-	"html/template"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"html/template"
+	"net/http"
+	"time"
 )
 
 type LoginForm struct {
@@ -37,9 +37,10 @@ func LoginProcessCtr(c *gin.Context) {
 		showMessage(c, message)
 	}
 }
+
 /*
 	Show message with template
- */
+*/
 func showMessage(c *gin.Context, message string) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
 		"message": template.HTML(message),
