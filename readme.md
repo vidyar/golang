@@ -5,8 +5,8 @@ Golang blog software
 ## Install
 
 ```
-go get github.com/netroby/gosense
-godep go build
+go get -u github.com/netroby/gosense
+go build
 ./gosense # windows gosense.exe
 ```
 
