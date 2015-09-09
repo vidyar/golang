@@ -1,8 +1,6 @@
 package main
 
 import (
-	"./internal/controller/admin"
-	"./internal/controller/front"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,14 +9,14 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
 
-	r.GET("/", front.HomeCtr)
-	r.GET("/ping", front.PingCtr)
+	r.GET("/", FrontHomeCtr)
+	r.GET("/ping", FrontPingCtr)
 
 	v1 := r.Group("/admin")
 	{
-		v1.GET("/login", admin.LoginCtr)
-		v1.POST("/login-process", admin.LoginProcessCtr)
-		v1.GET("/addblog", admin.AddBlogCtr)
+		v1.GET("/login", AdminLoginCtr)
+		v1.POST("/login-process", Admin.LoginProcessCtr)
+		v1.GET("/addblog", AdminAddBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")

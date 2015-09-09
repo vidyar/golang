@@ -1,4 +1,4 @@
-package admin
+package main
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,20 +8,20 @@ import (
 	"time"
 )
 
-type LoginForm struct {
+type AdminLoginForm struct {
 	Username string `form:"username" binding:"required"`
 	Password string `form:"password" binding:"required"`
 }
 
-func AddBlogCtr(c *gin.Context) {
+func AdminAddBlogCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
 }
 
-func LoginCtr(c *gin.Context) {
+func AdminLoginCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin-login.html", gin.H{})
 }
 
-func LoginProcessCtr(c *gin.Context) {
+func AdminLoginProcessCtr(c *gin.Context) {
 	var form LoginForm
 	c.BindWith(&form, binding.MultipartForm)
 
@@ -41,7 +41,7 @@ func LoginProcessCtr(c *gin.Context) {
 /*
 	Show message with template
 */
-func showMessage(c *gin.Context, message string) {
+func AdminshowMessage(c *gin.Context, message string) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
 		"message": template.HTML(message),
 	})

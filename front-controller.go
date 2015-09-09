@@ -1,13 +1,12 @@
-package front
-
+package main
 
 import (
+	"database/sql"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"net/http"
-	"github.com/gin-gonic/gin"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type blogItem struct {
@@ -15,10 +14,10 @@ type blogItem struct {
 	title string
 }
 
-func PingCtr(c *gin.Context) {
+func FrontPingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
-func HomeCtr(c *gin.Context) {
+func FrontHomeCtr(c *gin.Context) {
 	db, err := sql.Open("mysql", "root:deyilife@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
 	if err != nil {
 		panic(err.Error())
@@ -31,7 +30,7 @@ func HomeCtr(c *gin.Context) {
 	}
 
 	var bl [2]blogItem
-	bl[0] =  blogItem{
+	bl[0] = blogItem{
 		"//www.netroby.com/view.php?id=3833",
 		"How To Manually Install Oracle Java on a Debian or Ubuntu VPS",
 	}
@@ -47,10 +46,10 @@ func HomeCtr(c *gin.Context) {
 			bl[i].title,
 		)
 	}
-	 username, err := c.Request.Cookie("username")
+	username, err := c.Request.Cookie("username")
 
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"bloglist":template.HTML(blogList),
-		"username":username,
+		"bloglist": template.HTML(blogList),
+		"username": username,
 	})
 }
