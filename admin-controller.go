@@ -22,8 +22,8 @@ func AdminLoginCtr(c *gin.Context) {
 }
 
 func AdminLoginProcessCtr(c *gin.Context) {
-	var form LoginForm
-	c.BindWith(&form, binding.MultipartForm)
+	var form AdminLoginForm
+	c.BindWith(&form, binding.Form)
 
 	if form.Username == "netroby" && form.Password == "deyilife" {
 		expire := time.Now().AddDate(0, 0, 1)
@@ -31,17 +31,17 @@ func AdminLoginProcessCtr(c *gin.Context) {
 
 		http.SetCookie(c.Writer, &cookie)
 		message := "you are logged in<a href=\"/\">Click to go</a>"
-		showMessage(c, message)
+		AdminShowMessage(c, message)
 	} else {
 		message := "Login failed"
-		showMessage(c, message)
+		AdminShowMessage(c, message)
 	}
 }
 
 /*
 	Show message with template
 */
-func AdminshowMessage(c *gin.Context, message string) {
+func AdminShowMessage(c *gin.Context, message string) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
 		"message": template.HTML(message),
 	})

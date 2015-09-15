@@ -15,7 +15,7 @@ func main() {
 	v1 := r.Group("/admin")
 	{
 		v1.GET("/login", AdminLoginCtr)
-		v1.POST("/login-process", Admin.LoginProcessCtr)
+		v1.POST("/login-process", AdminLoginProcessCtr)
 		v1.GET("/addblog", AdminAddBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
