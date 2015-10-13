@@ -22,6 +22,8 @@ func FrontHomeCtr(c *gin.Context) {
 	if err != nil {
 		panic(err.Error())
 	}
+	db.SetMaxIdleConns(50)
+	db.SetMaxOpenConns(100)
 	defer db.Close()
 
 	err = db.Ping()
