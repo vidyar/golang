@@ -3,4 +3,3 @@
 *.iml
 gosense
 cmd/setup/setup
-vendor/*
