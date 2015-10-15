@@ -13,15 +13,17 @@ type AdminLoginForm struct {
 	Password string `form:"password" binding:"required"`
 }
 
-func AdminAddBlogCtr(c *gin.Context) {
+type AdminController struct  {}
+
+func (ac *AdminController) AddBlogCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
 }
 
-func AdminLoginCtr(c *gin.Context) {
+func (ac *AdminController) LoginCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin-login.html", gin.H{})
 }
 
-func AdminLoginProcessCtr(c *gin.Context) {
+func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 	var form AdminLoginForm
 	c.BindWith(&form, binding.Form)
 
@@ -31,17 +33,17 @@ func AdminLoginProcessCtr(c *gin.Context) {
 
 		http.SetCookie(c.Writer, &cookie)
 		message := "you are logged in<a href=\"/\">Click to go</a>"
-		AdminShowMessage(c, message)
+		ac.ShowMessage(c, message)
 	} else {
 		message := "Login failed"
-		AdminShowMessage(c, message)
+		ac.ShowMessage(c, message)
 	}
 }
 
 /*
 	Show message with template
 */
-func AdminShowMessage(c *gin.Context, message string) {
+func (ac *AdminController) ShowMessage(c *gin.Context, message string) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
 		"message": template.HTML(message),
 	})

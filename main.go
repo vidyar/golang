@@ -9,14 +9,16 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
 
-	r.GET("/", FrontHomeCtr)
-	r.GET("/ping", FrontPingCtr)
+	fc := new(FrontController)
+	r.GET("/", fc.HomeCtr)
+	r.GET("/ping", fc.PingCtr)
 
+	ac := new(AdminController)
 	v1 := r.Group("/admin")
 	{
-		v1.GET("/login", AdminLoginCtr)
-		v1.POST("/login-process", AdminLoginProcessCtr)
-		v1.GET("/addblog", AdminAddBlogCtr)
+		v1.GET("/login", ac.LoginCtr)
+		v1.POST("/login-process", ac.LoginProcessCtr)
+		v1.GET("/addblog", ac.AddBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")

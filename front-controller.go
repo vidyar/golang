@@ -14,10 +14,12 @@ type blogItem struct {
 	title string
 }
 
-func FrontPingCtr(c *gin.Context) {
+type FrontController struct {}
+
+func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
-func FrontHomeCtr(c *gin.Context) {
+func (fc *FrontController) HomeCtr(c *gin.Context) {
 	db, err := sql.Open("mysql", "root:deyilife@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
 	if err != nil {
 		panic(err.Error())
