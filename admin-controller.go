@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"html/template"
 	"net/http"
-"github.com/gin-gonic/contrib/sessions"
 )
 
 type AdminLoginForm struct {
@@ -13,7 +13,7 @@ type AdminLoginForm struct {
 	Password string `form:"password" binding:"required"`
 }
 
-type AdminController struct  {}
+type AdminController struct{}
 
 func (ac *AdminController) AddBlogCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
@@ -34,14 +34,14 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 		c.Redirect(301, "/")
 	} else {
 		message := "Login failed"
-		ac.ShowMessage(c, message)
+		ShowMessage(c, message)
 	}
 }
 
 /*
 	Show message with template
 */
-func (ac *AdminController) ShowMessage(c *gin.Context, message string) {
+func ShowMessage(c *gin.Context, message string) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
 		"message": template.HTML(message),
 	})

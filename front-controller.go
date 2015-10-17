@@ -14,7 +14,7 @@ type blogItem struct {
 	title string
 }
 
-type FrontController struct {}
+type FrontController struct{}
 
 func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
