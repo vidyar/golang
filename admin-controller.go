@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"time"
+"github.com/gin-gonic/contrib/sessions"
 )
 
 type AdminLoginForm struct {
@@ -27,12 +28,11 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 	var form AdminLoginForm
 	c.BindWith(&form, binding.Form)
 
-	if form.Username == "netroby" && form.Password == "deyilife" {
-		expire := time.Now().AddDate(0, 0, 1)
-		cookie := http.Cookie{Name: "username", Value: "netroby", Path: "/", Expires: expire, MaxAge: 86400}
-
-		http.SetCookie(c.Writer, &cookie)
-		message := "you are logged in<a href=\"/\">Click to go</a>"
+	if form.Username == "netroby" && form.Password == "dy123456" {
+		session := sessions.Default(c)
+		session.Set("username", "netroby")
+		session.Save()
+		c.Redirect(301, "/")
 		ac.ShowMessage(c, message)
 	} else {
 		message := "Login failed"
