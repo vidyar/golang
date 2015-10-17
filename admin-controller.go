@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"html/template"
 	"net/http"
-	"time"
 "github.com/gin-gonic/contrib/sessions"
 )
 
@@ -33,7 +32,6 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 		session.Set("username", "netroby")
 		session.Save()
 		c.Redirect(301, "/")
-		ac.ShowMessage(c, message)
 	} else {
 		message := "Login failed"
 		ac.ShowMessage(c, message)
