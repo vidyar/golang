@@ -37,12 +37,3 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 		ShowMessage(c, message)
 	}
 }
-
-/*
-	Show message with template
-*/
-func ShowMessage(c *gin.Context, message string) {
-	c.HTML(http.StatusOK, "message.html", gin.H{
-		"message": template.HTML(message),
-	})
-}
