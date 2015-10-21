@@ -3,11 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"net/http"
-"github.com/gin-gonic/contrib/sessions"
 )
 
 type blogItem struct {
