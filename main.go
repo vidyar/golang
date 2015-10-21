@@ -2,10 +2,13 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+"github.com/gin-gonic/contrib/sessions"
 )
 
 func main() {
 	r := gin.Default()
+	store := sessions.NewCookieStore([]byte("gssecret"))
+	r.Use(sessions.Sessions("mysession", store))
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
 

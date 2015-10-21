@@ -40,7 +40,7 @@
 </header>
 <div class="container">
     {{if .username }}
-    <div>Welcome {{ .username }}</div>
+    <div>Welcome {{ .username }} <a href="/admin/addblog">Add blog</a></div>
     {{else}}
     <div>You need login</div>
     {{end}}

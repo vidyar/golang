@@ -7,6 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"net/http"
+"github.com/gin-gonic/contrib/sessions"
 )
 
 type blogItem struct {
@@ -20,7 +21,7 @@ func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func (fc *FrontController) HomeCtr(c *gin.Context) {
-	db, err := sql.Open("mysql", "root:deyilife@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -50,8 +51,8 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 			bl[i].title,
 		)
 	}
-	username, err := c.Request.Cookie("username")
-
+	session := sessions.Default(c)
+	username := session.Get("username")
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"bloglist": template.HTML(blogList),
 		"username": username,
