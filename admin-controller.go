@@ -36,3 +36,10 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 		ShowMessage(c, message)
 	}
 }
+
+func (ac *AdminController) LogoutCtr(c *gin.Context) {
+	session := sessions.Default(c)
+	session.Delete("username")
+	session.Save()
+	c.Redirect(301, "/")
+}

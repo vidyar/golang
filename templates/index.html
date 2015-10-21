@@ -26,10 +26,18 @@
                 <li><a href="bash.php">Bash</a></li>
                 <li> <a href="idc.php">IDC</a></li>
                 <li><a href="rss.php">Rss</a></li>
-                <li><a href="admin/login">Login</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
+                    {{if .username }}
+                    <div style="color:white">
+                        Welcome {{ .username }}
+                        <a href="/admin/addblog">Add blog</a>
+                        <a href="/admin/logout">Logout</a>
+                    </div>
+                    {{else}}
+                    <div><a href="/admin/login">Login</a></div>
+                    {{end}}
                     <form action="search.php" method="get" style="margin-top:10px">
                         <input name="q"><input type="submit" value="Search" class="btn btn-primary" style="margin:0px 10px">
                     </form>
@@ -39,11 +47,6 @@
     </div>
 </header>
 <div class="container">
-    {{if .username }}
-    <div>Welcome {{ .username }} <a href="/admin/addblog">Add blog</a></div>
-    {{else}}
-    <div>You need login</div>
-    {{end}}
     <div class="content">
         <ul class="blog-list">
             {{ .bloglist }}

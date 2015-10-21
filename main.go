@@ -21,6 +21,7 @@ func main() {
 	{
 		v1.GET("/login", ac.LoginCtr)
 		v1.POST("/login-process", ac.LoginProcessCtr)
+		v1.GET("/logout", ac.LogoutCtr)
 		v1.GET("/addblog", ac.AddBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
