@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"net/http"
 	"log"
+	"strconv"
 )
 
 type FrontController struct{}
@@ -29,9 +30,19 @@ func (fc *FrontController) PingCtr(c *gin.Context) {
 func (fc *FrontController) HomeCtr(c *gin.Context) {
 	db := getDB()
 	defer db.Close()
+	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	page -= 1
+	if page < 0 {
+		page = 0
+	}
 	var blogList string
 	rpp := 20
-	offset := 0
+	offset := page * rpp
+	log.Println(rpp)
+	log.Println(offset)
 	rows, err := db.Query("Select aid, title from top_article order by aid desc limit ? offset ? ", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)

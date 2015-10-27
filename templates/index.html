@@ -11,6 +11,15 @@
     </script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/s/css/default.css">
+    <style>
+        .paginav {
+            width:100%;
+            height:24px;
+            margin:20px 40px;
+            display:block;
+            clear:both;
+        }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -52,8 +61,12 @@
             {{ .bloglist }}
         </ul>
         <div class="txtcenter">
-            <ul class="pagination">
-                <li><a class="hoveron" href="?page=1">1</a></li><li><a href="?page=2">2</a></li><li><a href="?page=3">3</a></li><li><a href="?page=4">4</a></li><li><a href="?page=5">5</a></li><li><a href="?page=6">6</a></li><li><a href="?page=7">7</a></li><li><a href="?page=8">8</a></li><li><a href="?page=9">9</a></li><li><a href="?page=10">10</a></li><li><a href="?page=83">83</a></li> </ul>
+
+            <div class="paginav">
+                <div style="float:right"><a href="/?page=2">Next page</a></div>
+                <div style="float:left"><a href="/?page=1">Previous Page</a></div>
+                </div>
+
         </div>
         <div class="txtcenter">
             Links:
