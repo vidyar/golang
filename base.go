@@ -22,13 +22,24 @@ func ShowMessage(c *gin.Context, message string) {
 }
 
 func GetDB(config *appConfig) *sql.DB {
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/gosense?charset=utf8mb4", config.Db_user, config.Db_password, config.Db_host, config.Db_port))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4",
+		config.Db_user, config.Db_password, config.Db_host, config.Db_port, config.Db_name))
 	if err != nil {
 		panic(err.Error())
 	}
 	db.SetMaxIdleConns(50)
 	db.SetMaxOpenConns(100)
 	return db
+}
+
+type appConfig struct {
+	Db_host        string
+	Db_port        int
+	Db_name        string
+	Db_user        string
+	Db_password    string
+	Admin_user     string
+	Admin_password string
 }
 
 func GetConfig() *appConfig {

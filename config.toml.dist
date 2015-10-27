@@ -1,6 +1,7 @@
 db_host = "db"
+db_port = 3306
+db_name = "gosense"
 db_user = "root"
 db_password = ""
-db_port = 3306
 admin_user = "admin"
 admin_password = "s3curity"

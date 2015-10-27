@@ -5,16 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type appConfig struct {
-	Title          string
-	Db_host        string
-	Db_user        string
-	Db_password    string
-	Db_port        int
-	Admin_user     string
-	Admin_password string
-}
-
 func main() {
 
 	r := gin.Default()
