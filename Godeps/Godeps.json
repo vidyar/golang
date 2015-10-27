@@ -50,6 +50,14 @@
 			"Rev": "40e4aedc8fabf8c23e040057540867186712faa5"
 		},
 		{
+			"ImportPath": "github.com/naoina/go-stringutil",
+			"Rev": "360db0db4b01d34e12a2ec042c09e7d37fece761"
+		},
+		{
+			"ImportPath": "github.com/naoina/toml",
+			"Rev": "751171607256bb66e64c9f0220c00662420c38e9"
+		},
+		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "d8f3c68ddd4bb686ca3bd70e49bbc64b80c78144"
 		},
