@@ -17,6 +17,7 @@ func main() {
 	r.GET("/", fc.HomeCtr)
 	r.GET("/about", fc.AboutCtr)
 	r.GET("/view/:id", fc.ViewCtr)
+	r.GET("/view.php", fc.ViewAltCtr)
 	r.GET("/ping", fc.PingCtr)
 
 	ac := new(AdminController)

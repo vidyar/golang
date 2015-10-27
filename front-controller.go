@@ -77,6 +77,11 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 		"next_page": next_page,
 	})
 }
+func (fc *FrontController) ViewAltCtr(c *gin.Context) {
+	id := c.DefaultQuery("id", "0")
+	c.Redirect(301, fmt.Sprintf("/view/%s", id))
+
+}
 func (fc *FrontController) ViewCtr(c *gin.Context) {
 	id := c.Param("id")
 	config := GetConfig()
