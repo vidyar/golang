@@ -33,11 +33,11 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 		page = 0
 	}
 
-	prev_page := page - 1
+	prev_page := page
 	if prev_page < 1 {
 		prev_page = 1
 	}
-	next_page := page + 1
+	next_page := page + 2
 
 	var blogList string
 	rpp := 20
