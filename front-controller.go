@@ -37,7 +37,7 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	offset := page * rpp
 	log.Println(rpp)
 	log.Println(offset)
-	rows, err := db.Query("Select aid, title from top_article order by aid desc limit ? offset ? ", &rpp, &offset)
+	rows, err := db.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)
 	}
