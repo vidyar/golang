@@ -10,7 +10,6 @@
         //]]>
     </script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/s/css/default.css">
     <style>
         .paginav {
             width:100%;
@@ -30,11 +29,8 @@
         </div>
         <nav class="collapse navbar-collapse " role="navigation">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="bash.php">Bash</a></li>
-                <li> <a href="idc.php">IDC</a></li>
-                <li><a href="rss.php">Rss</a></li>
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -45,9 +41,9 @@
                         <a href="/admin/logout">Logout</a>
                     </div>
                     {{else}}
-                    <div><a href="/admin/login">Login</a></div>
+                    <div> Welcome </div>
                     {{end}}
-                    <form action="search.php" method="get" style="margin-top:10px">
+                    <form action="/search" method="get" style="margin-top:10px">
                         <input name="q"><input type="submit" value="Search" class="btn btn-primary" style="margin:0px 10px">
                     </form>
                 </li>

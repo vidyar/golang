@@ -14,6 +14,7 @@ func main() {
 
 	fc := new(FrontController)
 	r.GET("/", fc.HomeCtr)
+	r.GET("/about", fc.AboutCtr)
 	r.GET("/view/:id", fc.ViewCtr)
 	r.GET("/ping", fc.PingCtr)
 

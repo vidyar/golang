@@ -24,6 +24,9 @@ func getDB() (*sql.DB) {
 	return db
 }
 
+func (fc *FrontController) AboutCtr(c *gin.Context) {
+	c.HTML(http.StatusOK, "about.html", gin.H{})
+}
 func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
