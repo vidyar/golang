@@ -32,6 +32,13 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	if page < 0 {
 		page = 0
 	}
+
+	prev_page := page - 1
+	if prev_page < 1 {
+		prev_page = 1
+	}
+	next_page := page + 1
+
 	var blogList string
 	rpp := 20
 	offset := page * rpp
@@ -64,8 +71,10 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	session := sessions.Default(c)
 	username := session.Get("username")
 	c.HTML(http.StatusOK, "index.html", gin.H{
-		"bloglist": template.HTML(blogList),
-		"username": username,
+		"bloglist":  template.HTML(blogList),
+		"username":  username,
+		"prev_page": prev_page,
+		"next_page": next_page,
 	})
 }
 func (fc *FrontController) ViewCtr(c *gin.Context) {
