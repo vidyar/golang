@@ -18,10 +18,10 @@ type appConfig struct {
 func main() {
 
 	r := gin.Default()
+	r.Static("/assets", "assets")
 	store := sessions.NewCookieStore([]byte("gssecret"))
 	r.Use(sessions.Sessions("mysession", store))
 	r.LoadHTMLGlob("templates/*")
-	r.Static("/assets", "./assets")
 
 	fc := new(FrontController)
 	r.GET("/", fc.HomeCtr)
