@@ -11,11 +11,6 @@ import (
 	"log"
 )
 
-type blogItem struct {
-	url   string
-	title string
-}
-
 type FrontController struct{}
 
 func getDB() (*sql.DB) {
@@ -32,35 +27,34 @@ func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func (fc *FrontController) HomeCtr(c *gin.Context) {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
-	if err != nil {
-		panic(err.Error())
-	}
-	db.SetMaxIdleConns(50)
-	db.SetMaxOpenConns(100)
+	db := getDB()
 	defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	var bl [2]blogItem
-	bl[0] = blogItem{
-		"//www.netroby.com/view.php?id=3833",
-		"How To Manually Install Oracle Java on a Debian or Ubuntu VPS",
-	}
-	bl[1] = blogItem{
-		"//www.netroby.com/view.php?id=3832",
-		"Linux 4.0 kernel released",
-	}
 	var blogList string
-	for i := 0; i < len(bl); i++ {
+	rpp := 20
+	offset := 0
+	rows, err := db.Query("Select aid, title from top_article order by aid desc limit ? offset ? ", &rpp, &offset)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer  rows.Close()
+	var (
+		aid int
+		title sql.NullString
+	)
+	for rows.Next() {
+		err := rows.Scan(&aid, &title)
+		if err != nil {
+			log.Fatal(err)
+		}
 		blogList += fmt.Sprintf(
-			"<li><a href=\"%s\">%s</a></li>",
-			bl[i].url,
-			bl[i].title,
+			"<li><a href=\"/view/%d\">%s</a></li>",
+			aid,
+			title.String,
 		)
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
 	}
 	session := sessions.Default(c)
 	username := session.Get("username")
