@@ -6,8 +6,9 @@ A blog web app powered by golang, see demo : https://www.netroby.com
 ## Install
 
 ```
+go get github.com/tools/godep
 go get -u github.com/netroby/gosense
-go build
+godep go build
 ./gosense # windows gosense.exe
 ```
 
