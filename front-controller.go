@@ -7,22 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"html/template"
-	"net/http"
 	"log"
+	"net/http"
 	"strconv"
 )
 
 type FrontController struct{}
-
-func getDB() (*sql.DB) {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/gosense?charset=utf8mb4")
-	if err != nil {
-		panic(err.Error())
-	}
-	db.SetMaxIdleConns(50)
-	db.SetMaxOpenConns(100)
-	return db
-}
 
 func (fc *FrontController) AboutCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "about.html", gin.H{})
@@ -31,7 +21,8 @@ func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func (fc *FrontController) HomeCtr(c *gin.Context) {
-	db := getDB()
+	config := GetConfig()
+	db := GetDB(config)
 	defer db.Close()
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil {
@@ -50,9 +41,9 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer  rows.Close()
+	defer rows.Close()
 	var (
-		aid int
+		aid   int
 		title sql.NullString
 	)
 	for rows.Next() {
@@ -79,18 +70,19 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 }
 func (fc *FrontController) ViewCtr(c *gin.Context) {
 	id := c.Param("id")
-	db := getDB()
+	config := GetConfig()
+	db := GetDB(config)
 	defer db.Close()
 	rows, err := db.Query("Select * from top_article where aid = ?", &id)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer  rows.Close()
+	defer rows.Close()
 	var (
-		aid int
-		title sql.NullString
-		content sql.NullString
-		publish_time sql.NullString
+		aid            int
+		title          sql.NullString
+		content        sql.NullString
+		publish_time   sql.NullString
 		publish_status sql.NullInt64
 	)
 	for rows.Next() {

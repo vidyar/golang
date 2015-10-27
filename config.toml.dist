@@ -1,0 +1,6 @@
+db_host = "db"
+db_user = "root"
+db_password = ""
+db_port = 3306
+admin_user = "admin"
+admin_password = "s3curity"

@@ -24,9 +24,10 @@ func (ac *AdminController) LoginCtr(c *gin.Context) {
 
 func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 	var form AdminLoginForm
+	config := GetConfig()
 	c.BindWith(&form, binding.Form)
 
-	if form.Username == "netroby" && form.Password == "dy123456" {
+	if form.Username == config.Admin_user && form.Password == config.Admin_password {
 		session := sessions.Default(c)
 		session.Set("username", "netroby")
 		session.Save()
