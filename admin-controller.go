@@ -36,8 +36,8 @@ func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 		return
 	}
 	db := GetDB(config)
-	result, err := db.Exec("insert into top_article (title, content) values (?, ?)", BI.title, BI.content);
-	if result && err == nil {
+	_, err := db.Exec("insert into top_article (title, content) values (?, ?)", BI.title, BI.content);
+	if err == nil {
 		ShowMessage(c, "Success")
 	} else {
 		ShowMessage(c, "Failed to save blog")
