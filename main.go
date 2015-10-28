@@ -27,6 +27,7 @@ func main() {
 		v1.POST("/login-process", ac.LoginProcessCtr)
 		v1.GET("/logout", ac.LogoutCtr)
 		v1.GET("/addblog", ac.AddBlogCtr)
+		v1.POST("/save-blog-add", ac.SaveBlogAddCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")
