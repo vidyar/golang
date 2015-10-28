@@ -1,3 +1,4 @@
+create database if not exists gosense;
 CREATE TABLE `top_article` (
   `aid` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) CHARACTER SET utf8 DEFAULT '',
