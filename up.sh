@@ -1,6 +1,7 @@
 #!/bin/bash
 go get github.com/tools/godep
 godep go build
+docker rm -vf db
 docker rm -vf gosense
 # docker run --restart=always -p 80:8080 --link db:db -v /data/www/gosense:/www --name gosense netroby/alpgo /www/gosense
 docker run --restart=always -d --name db  -v /mysql-data netroby/docker-mysql
