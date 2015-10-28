@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ ! -f config.toml ]; then
+    cp config.toml.dist config.toml
+fi
 go get github.com/tools/godep
 godep go build
 docker rm -vf gs_db
@@ -8,4 +11,4 @@ docker run --restart=always -d --name gs_db  -v /mysql-data netroby/docker-mysql
 sleep 15
 docker cp sql/bak.sql gs_db:/root/
 docker exec gs_db sh -c "mysql < /root/bak.sql"
-docker run --restart=always -d --link gs_db:db -v $(pwd):/www --name gosense netroby/alpgo /www/gosense
+docker run --restart=always -d -p 8080:8080 --link gs_db:db -v $(pwd):/www --name gosense netroby/alpgo /www/gosense
