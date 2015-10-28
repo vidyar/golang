@@ -13,8 +13,8 @@ type AdminLoginForm struct {
 }
 
 type BlogItem struct {
-	title          string
-	content        string
+	Title   string `form:"title" binding:"required"`
+	Content string `form:"content" binding:"required"`
 }
 
 type AdminController struct{}
@@ -27,16 +27,16 @@ func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 	var BI BlogItem
 	config := GetConfig()
 	c.BindWith(&BI, binding.Form)
-	if BI.title == "" {
+	if BI.Title == "" {
 		ShowMessage(c, "Title can not empty")
 		return
 	}
-	if BI.content == "" {
+	if BI.Content == "" {
 		ShowMessage(c, "Content can not empty")
 		return
 	}
 	db := GetDB(config)
-	_, err := db.Exec("insert into top_article (title, content) values (?, ?)", BI.title, BI.content);
+	_, err := db.Exec("insert into top_article (title, content) values (?, ?)", BI.Title, BI.Content)
 	if err == nil {
 		ShowMessage(c, "Success")
 	} else {

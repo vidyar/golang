@@ -109,7 +109,7 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	log.Println(offset)
 	rows, err := db.Query(
 		"Select aid, title from top_article where publish_status = 1 and title like ? order by aid desc limit ? offset ? ",
-		"%" + keyword + "%", &rpp, &offset)
+		"%"+keyword+"%", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -137,7 +137,7 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	username := session.Get("username")
 	c.HTML(http.StatusOK, "search.html", gin.H{
 		"bloglist":  template.HTML(blogList),
-		"keyword": keyword,
+		"keyword":   keyword,
 		"username":  username,
 		"prev_page": prev_page,
 		"next_page": next_page,
