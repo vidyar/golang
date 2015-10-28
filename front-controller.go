@@ -77,6 +77,73 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 		"next_page": next_page,
 	})
 }
+
+func (fc *FrontController) SearchCtr(c *gin.Context) {
+	config := GetConfig()
+	db := GetDB(config)
+	defer db.Close()
+	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	page -= 1
+	if page < 0 {
+		page = 0
+	}
+
+	prev_page := page
+	if prev_page < 1 {
+		prev_page = 1
+	}
+	next_page := page + 2
+	keyword := c.DefaultQuery("keyword", "")
+	if keyword == "" {
+		ShowMessage(c, "Keyword can not empty")
+		return
+	}
+
+	var blogList string
+	rpp := 20
+	offset := page * rpp
+	log.Println(rpp)
+	log.Println(offset)
+	rows, err := db.Query(
+		"Select aid, title from top_article where publish_status = 1 and title like ? order by aid desc limit ? offset ? ",
+		"%" + keyword + "%", &rpp, &offset)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	var (
+		aid   int
+		title sql.NullString
+	)
+	for rows.Next() {
+		err := rows.Scan(&aid, &title)
+		if err != nil {
+			log.Fatal(err)
+		}
+		blogList += fmt.Sprintf(
+			"<li><a href=\"/view/%d\">%s</a></li>",
+			aid,
+			title.String,
+		)
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+	session := sessions.Default(c)
+	username := session.Get("username")
+	c.HTML(http.StatusOK, "search.html", gin.H{
+		"bloglist":  template.HTML(blogList),
+		"keyword": keyword,
+		"username":  username,
+		"prev_page": prev_page,
+		"next_page": next_page,
+	})
+}
+
 func (fc *FrontController) ViewAltCtr(c *gin.Context) {
 	id := c.DefaultQuery("id", "0")
 	c.Redirect(301, fmt.Sprintf("/view/%s", id))

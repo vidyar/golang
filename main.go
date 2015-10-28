@@ -19,6 +19,7 @@ func main() {
 	r.GET("/view/:id", fc.ViewCtr)
 	r.GET("/view.php", fc.ViewAltCtr)
 	r.GET("/ping", fc.PingCtr)
+	r.GET("/search", fc.SearchCtr)
 
 	ac := new(AdminController)
 	v1 := r.Group("/admin")
