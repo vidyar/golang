@@ -12,8 +12,7 @@ fi
 if [ $(docker ps -a | grep gosense | wc -l) -ge 1 ]; then
     docker rm -vf gosense
 fi
-# docker run --restart=always -p 80:8080 --link db:db -v /data/www/gosense:/www --name gosense netroby/alpgo /www/gosense
-docker run --restart=always -d --name gs_db  -v /mysql-data netroby/docker-mysql
+docker run --restart=always -d --name gs_db  netroby/docker-mysql
 
 while true; do
     if [ $(docker logs gs_db 2>&1 | grep "ready for connections" | wc -l)  -ge 2 ]; then
