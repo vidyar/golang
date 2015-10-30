@@ -11,7 +11,12 @@ go get -u github.com/netroby/gosense
 godep go build
 ./gosense # windows gosense.exe
 ```
+Or you can install docker, then run docker container 
 
+```
+git clone https://github.com/netroby/gosense.git
+./up.sh
+```
 ## License
 
 MIT License
