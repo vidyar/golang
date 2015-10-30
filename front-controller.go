@@ -108,8 +108,8 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	log.Println(rpp)
 	log.Println(offset)
 	rows, err := db.Query(
-		"Select aid, title from top_article where publish_status = 1 and title like ? order by aid desc limit ? offset ? ",
-		"%"+keyword+"%", &rpp, &offset)
+		"Select aid, title from top_article where publish_status = 1 and (title like ? or content like ?) order by aid desc limit ? offset ? ",
+		"%"+keyword+"%", "%"+keyword+"%", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)
 	}
