@@ -12,12 +12,31 @@ import (
 	"os"
 )
 
+type ShowMessage interface {
+	ShowMessage(c *gin.Context)
+}
+type msg struct {
+	msg string
+}
+type umsg struct {
+	msg string
+	url string
+}
+
 /*
 	Show message with template
 */
-func ShowMessage(c *gin.Context, message string) {
+func (m *msg) ShowMessage(c *gin.Context) {
 	c.HTML(http.StatusOK, "message.html", gin.H{
-		"message": template.HTML(message),
+		"message": template.HTML(m.msg),
+	})
+}
+
+func (m *umsg) ShowMessage(c *gin.Context) {
+
+	c.HTML(http.StatusOK, "message.html", gin.H{
+		"message": template.HTML(m.msg),
+		"url":     m.url,
 	})
 }
 

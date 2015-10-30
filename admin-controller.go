@@ -2,15 +2,15 @@ package main
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+	"fmt"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	_ "github.com/go-sql-driver/mysql"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
-	"log"
-	"fmt"
-"html/template"
 )
 
 type AdminLoginForm struct {
@@ -19,6 +19,11 @@ type AdminLoginForm struct {
 }
 
 type BlogItem struct {
+	Title   string `form:"title" binding:"required"`
+	Content string `form:"content" binding:"required"`
+}
+type EditBlogItem struct {
+	Aid     string `form:"aid" binding:"required"`
 	Title   string `form:"title" binding:"required"`
 	Content string `form:"content" binding:"required"`
 }
@@ -84,35 +89,60 @@ func (ac *AdminController) ListBlogCtr(c *gin.Context) {
 }
 
 func (ac *AdminController) EditBlogCtr(c *gin.Context) {
-	ShowMessage(c, "This is EditBlog action")
-}
-func (ac *AdminController) DeleteBlogCtr(c *gin.Context) {
-	ShowMessage(c, "This is delete blog action")
+	(&msg{"This is EditBlog action"}).ShowMessage(c)
 }
 
+func (ac *AdminController) DeleteBlogCtr(c *gin.Context) {
+	(&msg{"This is delete blog action"}).ShowMessage(c)
+}
 
 func (ac *AdminController) AddBlogCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
 }
 
+func (fc *AdminController) SaveBlogEditCtr(c *gin.Context) {
+	var BI EditBlogItem
+	config := GetConfig()
+	c.BindWith(&BI, binding.Form)
+	if BI.Aid == "" {
+		(&msg{"Can not find the blog been edit"}).ShowMessage(c)
+		return
+	}
+	if BI.Title == "" {
+		(&msg{"Title can not empty"}).ShowMessage(c)
+		return
+	}
+	if BI.Content == "" {
+		(&msg{"Content can not empty"}).ShowMessage(c)
+		return
+	}
+	db := GetDB(config)
+	_, err := db.Exec("update top_article set title=?, content=? where aid = ?", BI.Title, BI.Content, BI.Aid)
+	if err == nil {
+		(&msg{"Success"}).ShowMessage(c)
+	} else {
+		(&msg{"Failed to save blog"}).ShowMessage(c)
+	}
+
+}
 func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 	var BI BlogItem
 	config := GetConfig()
 	c.BindWith(&BI, binding.Form)
 	if BI.Title == "" {
-		ShowMessage(c, "Title can not empty")
+		(&msg{"Title can not empty"}).ShowMessage(c)
 		return
 	}
 	if BI.Content == "" {
-		ShowMessage(c, "Content can not empty")
+		(&msg{"Content can not empty"}).ShowMessage(c)
 		return
 	}
 	db := GetDB(config)
 	_, err := db.Exec("insert into top_article (title, content) values (?, ?)", BI.Title, BI.Content)
 	if err == nil {
-		ShowMessage(c, "Success")
+		(&msg{"Success"}).ShowMessage(c)
 	} else {
-		ShowMessage(c, "Failed to save blog")
+		(&msg{"Failed to save blog"}).ShowMessage(c)
 	}
 
 }
@@ -132,8 +162,7 @@ func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 		session.Save()
 		c.Redirect(301, "/")
 	} else {
-		message := "Login failed"
-		ShowMessage(c, message)
+		(&msg{"Login failed"}).ShowMessage(c)
 	}
 }
 

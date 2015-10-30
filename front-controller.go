@@ -98,7 +98,7 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	next_page := page + 2
 	keyword := c.DefaultQuery("keyword", "")
 	if keyword == "" {
-		ShowMessage(c, "Keyword can not empty")
+		(&msg{"Keyword can not empty"}).ShowMessage(c)
 		return
 	}
 

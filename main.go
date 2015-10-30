@@ -22,16 +22,18 @@ func main() {
 	r.GET("/search", fc.SearchCtr)
 
 	ac := new(AdminController)
-	v1 := r.Group("/admin")
+	admin := r.Group("/admin")
 	{
-		v1.GET("/login", ac.LoginCtr)
-		v1.POST("/login-process", ac.LoginProcessCtr)
-		v1.GET("/logout", ac.LogoutCtr)
-		v1.GET("/addblog", ac.AddBlogCtr)
-		v1.POST("/save-blog-add", ac.SaveBlogAddCtr)
-		v1.GET("/listblog", ac.ListBlogCtr)
-		v1.GET("/deleteblog/:id", ac.DeleteBlogCtr)
-		v1.GET("/editblog/:id", ac.EditBlogCtr)
+		admin.GET("/", ac.ListBlogCtr)
+		admin.GET("/login", ac.LoginCtr)
+		admin.POST("/login-process", ac.LoginProcessCtr)
+		admin.GET("/logout", ac.LogoutCtr)
+		admin.GET("/addblog", ac.AddBlogCtr)
+		admin.POST("/save-blog-add", ac.SaveBlogAddCtr)
+		admin.GET("/listblog", ac.ListBlogCtr)
+		admin.GET("/deleteblog/:id", ac.DeleteBlogCtr)
+		admin.POST("/save-blog-edit", ac.SaveBlogEditCtr)
+		admin.GET("/editblog/:id", ac.EditBlogCtr)
 	}
 	// Listen and serve on 0.0.0.0:8080
 	r.Run(":8080")

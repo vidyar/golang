@@ -6,7 +6,12 @@
 	</head>
 	<body>
 		<div>
-			{{ .message }}
+			<p>{{ .message }}</p>
+			<p>{{if .url }}
+				<a href="{{ .url }}">Ok</a>
+				{{end}}
+			</p>
 		</div>
+
 	</body>
 </html>
