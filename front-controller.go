@@ -103,6 +103,7 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 		(&msg{"Keyword can not empty"}).ShowMessage(c)
 		return
 	}
+	orig_keyword := keyword
 	keyword = strings.Replace(keyword, " ", "%", -1)
 
 	var blogList string
@@ -136,9 +137,10 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	}
 	session := sessions.Default(c)
 	username := session.Get("username")
+
 	c.HTML(http.StatusOK, "search.html", gin.H{
 		"bloglist":  template.HTML(blogList),
-		"keyword":   keyword,
+		"keyword":   orig_keyword,
 		"username":  username,
 		"prev_page": prev_page,
 		"next_page": next_page,
