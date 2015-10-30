@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+"strings"
 )
 
 type FrontController struct{}
@@ -101,12 +102,11 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 		(&msg{"Keyword can not empty"}).ShowMessage(c)
 		return
 	}
+	keyword = strings.Replace(keyword, " ", "%", -1)
 
 	var blogList string
 	rpp := 20
 	offset := page * rpp
-	log.Println(rpp)
-	log.Println(offset)
 	rows, err := db.Query(
 		"Select aid, title from top_article where publish_status = 1 and (title like ? or content like ?) order by aid desc limit ? offset ? ",
 		"%"+keyword+"%", "%"+keyword+"%", &rpp, &offset)
