@@ -179,6 +179,11 @@ func (fc *FrontController) ViewCtr(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	c.HTML(http.StatusOK, "view.html", gin.H{"aid": aid, "title": title.String, "content": template.HTML(content.String), "publish_time": publish_time.String})
+	c.HTML(http.StatusOK, "view.html", gin.H{
+		"aid": aid,
+		"title": title.String,
+		"content": template.HTML(content.String),
+		"publish_time": publish_time.String,
+	})
 
 }
