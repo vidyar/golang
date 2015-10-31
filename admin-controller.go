@@ -29,12 +29,11 @@ type EditBlogItem struct {
 	Content string `form:"content" binding:"required"`
 }
 
-type AdminController struct{}
+type AdminController struct{
+}
 
 func (ac *AdminController) ListBlogCtr(c *gin.Context) {
-	config := GetConfig()
-	db := GetDB(config)
-	defer db.Close()
+
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil {
 		log.Fatal(err)
@@ -55,7 +54,7 @@ func (ac *AdminController) ListBlogCtr(c *gin.Context) {
 	offset := page * rpp
 	log.Println(rpp)
 	log.Println(offset)
-	rows, err := db.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
+	rows, err := DB.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -101,9 +100,8 @@ func (ac *AdminController) AddBlogCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "add-blog.html", gin.H{})
 }
 
-func (fc *AdminController) SaveBlogEditCtr(c *gin.Context) {
+func (ac *AdminController) SaveBlogEditCtr(c *gin.Context) {
 	var BI EditBlogItem
-	config := GetConfig()
 	c.BindWith(&BI, binding.Form)
 	if BI.Aid == "" {
 		(&msg{"Can not find the blog been edit"}).ShowMessage(c)
@@ -117,8 +115,7 @@ func (fc *AdminController) SaveBlogEditCtr(c *gin.Context) {
 		(&msg{"Content can not empty"}).ShowMessage(c)
 		return
 	}
-	db := GetDB(config)
-	_, err := db.Exec("update top_article set title=?, content=? where aid = ?", BI.Title, BI.Content, BI.Aid)
+	_, err := DB.Exec("update top_article set title=?, content=? where aid = ?", BI.Title, BI.Content, BI.Aid)
 	if err == nil {
 		(&msg{"Success"}).ShowMessage(c)
 	} else {
@@ -128,7 +125,6 @@ func (fc *AdminController) SaveBlogEditCtr(c *gin.Context) {
 }
 func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 	var BI BlogItem
-	config := GetConfig()
 	c.BindWith(&BI, binding.Form)
 	if BI.Title == "" {
 		(&msg{"Title can not empty"}).ShowMessage(c)
@@ -138,8 +134,7 @@ func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 		(&msg{"Content can not empty"}).ShowMessage(c)
 		return
 	}
-	db := GetDB(config)
-	_, err := db.Exec(
+	_, err := DB.Exec(
 		"insert into top_article (title, content, publish_time, publish_status) values (?, ?, ?, 1)",
 		BI.Title, BI.Content, time.Now().Format("2006-01-02 15:04:05"))
 	if err == nil {
@@ -156,10 +151,9 @@ func (ac *AdminController) LoginCtr(c *gin.Context) {
 
 func (ac *AdminController) LoginProcessCtr(c *gin.Context) {
 	var form AdminLoginForm
-	config := GetConfig()
 	c.BindWith(&form, binding.Form)
 
-	if form.Username == config.Admin_user && form.Password == config.Admin_password {
+	if form.Username == Config.Admin_user && form.Password == Config.Admin_password {
 		session := sessions.Default(c)
 		session.Set("username", "netroby")
 		session.Save()

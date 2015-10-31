@@ -13,7 +13,8 @@ import (
 "strings"
 )
 
-type FrontController struct{}
+type FrontController struct{
+}
 
 func (fc *FrontController) AboutCtr(c *gin.Context) {
 	c.HTML(http.StatusOK, "about.html", gin.H{})
@@ -22,9 +23,6 @@ func (fc *FrontController) PingCtr(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 func (fc *FrontController) HomeCtr(c *gin.Context) {
-	config := GetConfig()
-	db := GetDB(config)
-	defer db.Close()
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +43,7 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	offset := page * rpp
 	log.Println(rpp)
 	log.Println(offset)
-	rows, err := db.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
+	rows, err := DB.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -80,9 +78,6 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 }
 
 func (fc *FrontController) SearchCtr(c *gin.Context) {
-	config := GetConfig()
-	db := GetDB(config)
-	defer db.Close()
 	page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
 	if err != nil {
 		log.Fatal(err)
@@ -109,7 +104,7 @@ func (fc *FrontController) SearchCtr(c *gin.Context) {
 	var blogList string
 	rpp := 20
 	offset := page * rpp
-	rows, err := db.Query(
+	rows, err := DB.Query(
 		"Select aid, title from top_article where publish_status = 1 and (title like ? or content like ?) order by aid desc limit ? offset ? ",
 		"%"+keyword+"%", "%"+keyword+"%", &rpp, &offset)
 	if err != nil {
@@ -154,10 +149,7 @@ func (fc *FrontController) ViewAltCtr(c *gin.Context) {
 }
 func (fc *FrontController) ViewCtr(c *gin.Context) {
 	id := c.Param("id")
-	config := GetConfig()
-	db := GetDB(config)
-	defer db.Close()
-	rows, err := db.Query("Select * from top_article where aid = ?", &id)
+	rows, err := DB.Query("Select * from top_article where aid = ?", &id)
 	if err != nil {
 		log.Fatal(err)
 	}

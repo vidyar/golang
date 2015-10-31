@@ -3,9 +3,17 @@ package main
 import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"database/sql"
 )
 
+var (
+	Config *appConfig
+	DB *sql.DB
+)
 func main() {
+
+	Config = GetConfig()
+	DB = GetDB(Config)
 
 	r := gin.Default()
 	r.Static("/assets", "assets")
