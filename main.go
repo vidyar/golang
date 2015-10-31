@@ -4,17 +4,20 @@ import (
 	"database/sql"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/golang/groupcache/lru"
 )
 
 var (
 	Config *appConfig
 	DB     *sql.DB
+	Cache *lru.Cache
 )
 
 func main() {
 
 	Config = GetConfig()
 	DB = GetDB(Config)
+	Cache = lru.New(8192)
 
 	r := gin.Default()
 	r.Static("/assets", "assets")

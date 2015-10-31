@@ -38,34 +38,40 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 	}
 	next_page := page + 2
 
-	var blogList string
 	rpp := 20
 	offset := page * rpp
-	log.Println(rpp)
-	log.Println(offset)
-	rows, err := DB.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	var (
-		aid   int
-		title sql.NullString
-	)
-	for rows.Next() {
-		err := rows.Scan(&aid, &title)
+	CKey := fmt.Sprintf("home-page-%d-rpp-%d", page, rpp)
+	var blogList string
+	val, ok := Cache.Get(CKey)
+	if val != nil && ok == true {
+		fmt.Println("Ok, we found cache, Cache Len: ", Cache.Len())
+		blogList = val.(string)
+	} else {
+		rows, err := DB.Query("Select aid, title from top_article where publish_status = 1 order by aid desc limit ? offset ? ", &rpp, &offset)
 		if err != nil {
 			log.Fatal(err)
 		}
-		blogList += fmt.Sprintf(
-			"<li><a href=\"/view/%d\">%s</a></li>",
-			aid,
-			title.String,
+		defer rows.Close()
+		var (
+			aid int
+			title sql.NullString
 		)
-	}
-	err = rows.Err()
-	if err != nil {
-		log.Fatal(err)
+		for rows.Next() {
+			err := rows.Scan(&aid, &title)
+			if err != nil {
+				log.Fatal(err)
+			}
+			blogList += fmt.Sprintf(
+				"<li><a href=\"/view/%d\">%s</a></li>",
+				aid,
+				title.String,
+			)
+		}
+		err = rows.Err()
+		if err != nil {
+			log.Fatal(err)
+		}
+		Cache.Add(CKey, blogList)
 	}
 	session := sessions.Default(c)
 	username := session.Get("username")
@@ -147,35 +153,49 @@ func (fc *FrontController) ViewAltCtr(c *gin.Context) {
 	c.Redirect(301, fmt.Sprintf("/view/%s", id))
 
 }
+
+type VBlogItem struct {
+	aid            int
+	title          sql.NullString
+	content        sql.NullString
+	publish_time   sql.NullString
+	publish_status sql.NullInt64
+}
 func (fc *FrontController) ViewCtr(c *gin.Context) {
 	id := c.Param("id")
-	rows, err := DB.Query("Select * from top_article where aid = ?", &id)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	var (
-		aid            int
-		title          sql.NullString
-		content        sql.NullString
-		publish_time   sql.NullString
-		publish_status sql.NullInt64
-	)
-	for rows.Next() {
-		err := rows.Scan(&aid, &title, &content, &publish_time, &publish_status)
+	var blog VBlogItem
+	CKey := fmt.Sprintf("blogitem-%d", id)
+	val, ok := Cache.Get(CKey)
+	if val != nil && ok == true {
+		fmt.Println("Ok, we found cache, Cache Len: ", Cache.Len())
+		blog = val.(VBlogItem)
+	} else {
+		rows, err := DB.Query("Select * from top_article where aid = ?", &id)
 		if err != nil {
 			log.Fatal(err)
 		}
-	}
-	err = rows.Err()
-	if err != nil {
-		log.Fatal(err)
+		defer rows.Close()
+		var (
+
+		)
+		for rows.Next() {
+			err := rows.Scan(&blog.aid, &blog.title, &blog.content, &blog.publish_time, &blog.publish_status)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+		err = rows.Err()
+		if err != nil {
+			log.Fatal(err)
+		}
+		Cache.Add(CKey, blog)
 	}
 	c.HTML(http.StatusOK, "view.html", gin.H{
-		"aid":          aid,
-		"title":        title.String,
-		"content":      template.HTML(content.String),
-		"publish_time": publish_time.String,
+		"aid":          blog.aid,
+		"title":        blog.title.String,
+		"content":      template.HTML(blog.content.String),
+		"publish_time": blog.publish_time.String,
 	})
+
 
 }
