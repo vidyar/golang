@@ -73,6 +73,8 @@ func (ac *AdminController) ListBlogCtr(c *gin.Context) {
 			"<li><a href=\"/view/%d\">%s</a>    [<a href=\"/admin/editblog/%d\">Edit</a>] [<a href=\"/admin/deleteblog/%d\">Delete</a>]</li>",
 			aid,
 			title.String,
+			aid,
+			aid,
 		)
 	}
 	err = rows.Err()
