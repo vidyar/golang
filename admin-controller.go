@@ -29,7 +29,7 @@ type EditBlogItem struct {
 	Content string `form:"content" binding:"required"`
 }
 
-type AdminController struct{
+type AdminController struct {
 }
 
 func (ac *AdminController) ListBlogCtr(c *gin.Context) {

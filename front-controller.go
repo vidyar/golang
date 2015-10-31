@@ -10,10 +10,10 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-"strings"
+	"strings"
 )
 
-type FrontController struct{
+type FrontController struct {
 }
 
 func (fc *FrontController) AboutCtr(c *gin.Context) {
@@ -172,9 +172,9 @@ func (fc *FrontController) ViewCtr(c *gin.Context) {
 		log.Fatal(err)
 	}
 	c.HTML(http.StatusOK, "view.html", gin.H{
-		"aid": aid,
-		"title": title.String,
-		"content": template.HTML(content.String),
+		"aid":          aid,
+		"title":        title.String,
+		"content":      template.HTML(content.String),
 		"publish_time": publish_time.String,
 	})
 

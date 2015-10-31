@@ -1,15 +1,16 @@
 package main
 
 import (
+	"database/sql"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"database/sql"
 )
 
 var (
 	Config *appConfig
-	DB *sql.DB
+	DB     *sql.DB
 )
+
 func main() {
 
 	Config = GetConfig()
