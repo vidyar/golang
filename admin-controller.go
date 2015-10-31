@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/golang/groupcache/lru"
 	"html/template"
 	"log"
 	"net/http"
@@ -117,6 +118,7 @@ func (ac *AdminController) SaveBlogEditCtr(c *gin.Context) {
 	}
 	_, err := DB.Exec("update top_article set title=?, content=? where aid = ?", BI.Title, BI.Content, BI.Aid)
 	if err == nil {
+		Cache = lru.New(8192)
 		(&msg{"Success"}).ShowMessage(c)
 	} else {
 		(&msg{"Failed to save blog"}).ShowMessage(c)
@@ -138,6 +140,7 @@ func (ac *AdminController) SaveBlogAddCtr(c *gin.Context) {
 		"insert into top_article (title, content, publish_time, publish_status) values (?, ?, ?, 1)",
 		BI.Title, BI.Content, time.Now().Format("2006-01-02 15:04:05"))
 	if err == nil {
+		Cache = lru.New(8192)
 		(&msg{"Success"}).ShowMessage(c)
 	} else {
 		(&msg{"Failed to save blog"}).ShowMessage(c)

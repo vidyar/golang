@@ -53,7 +53,7 @@ func (fc *FrontController) HomeCtr(c *gin.Context) {
 		}
 		defer rows.Close()
 		var (
-			aid int
+			aid   int
 			title sql.NullString
 		)
 		for rows.Next() {
@@ -161,6 +161,7 @@ type VBlogItem struct {
 	publish_time   sql.NullString
 	publish_status sql.NullInt64
 }
+
 func (fc *FrontController) ViewCtr(c *gin.Context) {
 	id := c.Param("id")
 	var blog VBlogItem
@@ -175,9 +176,7 @@ func (fc *FrontController) ViewCtr(c *gin.Context) {
 			log.Fatal(err)
 		}
 		defer rows.Close()
-		var (
-
-		)
+		var ()
 		for rows.Next() {
 			err := rows.Scan(&blog.aid, &blog.title, &blog.content, &blog.publish_time, &blog.publish_status)
 			if err != nil {
@@ -196,6 +195,5 @@ func (fc *FrontController) ViewCtr(c *gin.Context) {
 		"content":      template.HTML(blog.content.String),
 		"publish_time": blog.publish_time.String,
 	})
-
 
 }

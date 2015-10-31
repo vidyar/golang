@@ -10,7 +10,7 @@ import (
 var (
 	Config *appConfig
 	DB     *sql.DB
-	Cache *lru.Cache
+	Cache  *lru.Cache
 )
 
 func main() {
